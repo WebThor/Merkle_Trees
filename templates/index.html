@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Start – Merkle Tree Demo{% endblock %}
+{% block content %}
+<div class="thr-card" style="display: flex; flex-direction: column; align-items: center;">
+    <h2>Was möchtest du tun?</h2>
+    <div style="display: flex; gap: 2em; justify-content: center; margin: 2em 0;">
+        <a href="{{ url_for('create_tree') }}" class="thr-btn" style="background: {{ th_cyan }};">Merkle Tree erstellen</a>
+        <a href="{{ url_for('verify_proof') }}" class="thr-btn">Merkle Proof verifizieren</a>
+    </div>
+    <div style="margin-top: 2em; color: #444; font-size: 1.1em;">
+        <b>Didaktik-Tipp:</b>  
+        Im Tree-Modus kannst du Namenslisten eingeben und alle Proofs erzeugen – im Proof-Modus kann jede:r (z.B. Teilnehmer:in) den Nachweis für einen Namen (Ticket) erbringen, ohne die ganze Liste zu kennen.
+    </div>
+</div>
+{% endblock %}

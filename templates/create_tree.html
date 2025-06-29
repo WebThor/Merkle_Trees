@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Merkle Tree erstellen – Demo{% endblock %}
+{% block head %}
+<script src="{{ url_for('static', filename='merkle.js') }}"></script>
+{% endblock %}
+{% block content %}
+<div class="thr-card">
+    <h2>Merkle Tree erstellen</h2>
+    <form method="POST" autocomplete="off">
+        <label for="leaves">Teilnehmernamen (eine Zeile pro Name):</label><br>
+        <textarea name="leaves" id="leaves" rows="7" style="width: 100%; margin:1em 0;">{{ leaves|join('\n') if leaves else '' }}</textarea><br>
+        <button class="thr-btn" type="submit">Tree generieren</button>
+    </form>
+    <!-- Zurück-Button optisch sekundär, Abstand oben -->
+    <div style="margin: 1.5em 0 0.5em 0;">
+        <a href="{{ url_for('index') }}"
+           class="thr-btn thr-btn-alt"
+           style="
+             background: #fff;
+             color: #004372;
+             border: 1px solid #ccc;
+             font-size: 1em;
+             padding: 0.5em 1.2em;
+             text-decoration: none;
+             border-radius: 1.5em;
+             box-shadow: none;
+             transition: background 0.2s, color 0.2s;
+           "
+           onmouseover="this.style.background='#f5f7fa'; this.style.color='#003151'"
+           onmouseout="this.style.background='#fff'; this.style.color='#004372'"
+        >← Zurück</a>
+    </div>
+    {% if root %}
+        <div style="margin-top: 2em;">
+            <h3>Merkle Root</h3>
+            <code style="color: {{ th_cyan }}; font-size: 1.1em;">{{ root }}</code>
+        </div>
+        <div id="treevis" style="margin: 2em 0; min-height: 220px;"></div>
+        <script>
+            renderMerkleTree({{ tree_json|safe }});
+        </script>
+        <button class="thr-btn thr-btn-alt" style="margin-top:0.5em;" onclick="downloadMerkleJSON()">Export als JSON</button>
+        <script>
+            function downloadMerkleJSON() {
+                const data = {{ export_data|safe }};
+                const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "merkle_tree.json";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        </script>
+        <div style="margin-top: 2.2em;">
+            <h4>Beispiel-Proofs (für Verifikation):</h4>
+            <div style="font-size: 0.98em;">
+            {% for p in all_proofs %}
+                <div style="margin: 0.7em 0; border-bottom:1px solid #eee;">
+                    <b>Name:</b> <span style="color:{{ th_accent }}">{{ p.entry }}</span> <br>
+                    <b>Directions:</b> <code>{{ p.directions }}</code><br>
+                    <b>Proof:</b> <code>{{ p.proof }}</code>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

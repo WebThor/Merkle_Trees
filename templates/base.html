@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Merkle Tree Demo – TH Rosenheim{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='d3.v7.min.js') }}"></script>
+    {% block head %}{% endblock %}
+    <style>
+        body {
+            background: {{ th_bg }};
+            color: {{ th_primary }};
+        }
+        .thr-header {
+            background: {{ th_primary }};
+            color: #fff;
+            padding: 1.5em 0;
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .thr-card {
+            background: #fff;
+            border-radius: 1em;
+            box-shadow: 0 2px 12px rgba(0,67,114,0.08);
+            margin: 1.5em auto;
+            max-width: 600px;
+            padding: 2em 2em 1.5em 2em;
+        }
+        .thr-btn {
+            background: {{ th_primary }};
+            color: #fff;
+            border: none;
+            padding: 0.6em 2em;
+            font-size: 1.2em;
+            border-radius: 0.4em;
+            margin-top: 1em;
+            cursor: pointer;
+        }
+        .thr-btn-alt {
+            background: {{ th_cyan }};
+            color: #fff;
+        }
+        .thr-link {
+            color: {{ th_primary }};
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="thr-header">
+        Merkle Tree Live Demo 
+    </div>
+    {% block content %}{% endblock %}
+</body>
+</html>
