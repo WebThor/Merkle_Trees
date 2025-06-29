@@ -58,12 +58,22 @@
             <h4>Beispiel-Proofs (für Verifikation):</h4>
             <div style="font-size: 0.98em;">
             {% for p in all_proofs %}
-                <div style="margin: 0.7em 0; border-bottom:1px solid #eee;">
-                    <b>Name:</b> <span style="color:{{ th_accent }}">{{ p.entry }}</span> <br>
-                    <b>Directions:</b> <code>{{ p.directions }}</code><br>
-                    <b>Proof:</b> <code>{{ p.proof }}</code>
-                </div>
-            {% endfor %}
+    <div style="margin: 0.7em 0; border-bottom:1px solid #eee;">
+        <b>Name:</b> <span style="color:{{ th_accent }}">{{ p.entry }}</span> <br>
+        <b>Directions:</b> <code>{{ p.directions }}</code><br>
+        <b>Proof:</b> <code>{{ p.proof }}</code><br>
+        <!-- Button für Übergabe -->
+        <form action="{{ url_for('verify_proof') }}" method="get" style="display:inline;">
+            <input type="hidden" name="entry" value="{{ p.entry }}">
+            <input type="hidden" name="root" value="{{ root }}">
+            <input type="hidden" name="directions" value='{{ p.directions|tojson }}'>
+            <input type="hidden" name="proof" value='{{ p.proof|tojson }}'>
+            <button class="thr-btn thr-btn-alt" style="margin: 0.3em 0 0.7em 0;">Im Verifikator prüfen</button>
+        </form>
+    </div>
+{% endfor %}
+
+
             </div>
         </div>
     {% endif %}

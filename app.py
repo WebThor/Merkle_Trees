@@ -147,24 +147,25 @@ def download_json():
 def verify_proof():
     result = None
     error = None
-    entry = ''
-    root = ''
-    directions_raw = ''
-    proof_raw = ''
-    directions = []
-    proof = []
+
     if request.method == 'POST':
+        # Werte NUR aus dem Formular nehmen (nie mehr aus der URL!)
         entry = request.form.get('entry', '').strip()
         root = request.form.get('root', '').strip()
         directions_raw = request.form.get('directions', '').strip()
         proof_raw = request.form.get('proof', '').strip()
+    else:
+        # Beim ersten Aufruf mit GET (z.B. Button aus Merkle-Tree)
+        entry = request.args.get('entry', '').strip()
+        root = request.args.get('root', '').strip()
+        directions_raw = request.args.get('directions', '').strip()
+        proof_raw = request.args.get('proof', '').strip()
 
-        print("\n==== Neue Verifikation ====")
-        print("Entry:", entry)
-        print("Root:", root)
-        print("Directions_RAW:", repr(directions_raw))
-        print("Proof_RAW:", repr(proof_raw))
+    directions = []
+    proof = []
 
+    # Nur validieren/verifizieren, wenn POST!
+    if request.method == 'POST':
         directions = try_parse_json(directions_raw, "Directions")
         proof = try_parse_json(proof_raw, "Proof")
         try:
@@ -174,25 +175,27 @@ def verify_proof():
                 raise ValueError("Proof muss ein Array aus Hash-Strings sein!")
             if not entry or not root or not proof or not directions:
                 raise ValueError("Alle Felder müssen ausgefüllt werden!")
-            print("Starte Verifikation...")
             valid = verify_merkle_proof(entry, proof, directions, root)
-            print(f"Proof Verification Ergebnis: {valid}")
-            result = "✅ Proof gültig! (Teilnehmer:in ist enthalten)" if valid else "❌ Proof ungültig!"
+            result = "✅ Proof gültig! (Teilnehmer ist enthalten)" if valid else "❌ Proof ungültig!"
         except Exception as e:
-            print("!!! Fehler bei der Verifikation:", e)
             error = f"{e}"
 
-    return render_template('verify_proof.html',
-                           result=result,
-                           entry=entry,
-                           root=root,
-                           directions=directions_raw,
-                           proof=proof_raw,
-                           error=error,
-                           th_primary=THR_PRIMARY,
-                           th_cyan=THR_CYAN,
-                           th_bg=THR_BG,
-                           th_accent=THR_ACCENT)
+    return render_template(
+        'verify_proof.html',
+        result=result,
+        entry=entry,
+        root=root,
+        directions=directions_raw,
+        proof=proof_raw,
+        error=error,
+        th_primary=THR_PRIMARY,
+        th_cyan=THR_CYAN,
+        th_bg=THR_BG,
+        th_accent=THR_ACCENT
+    )
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

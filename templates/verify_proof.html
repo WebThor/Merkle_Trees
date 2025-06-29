@@ -5,16 +5,16 @@
     <h2>Merkle Proof verifizieren</h2>
     <form id="proofForm" method="POST" autocomplete="off" onsubmit="return validateProofForm();">
         <label>Name (zu prüfender Eintrag):<br>
-            <input type="text" name="entry" id="entry" value="{{ entry or request.form.get('entry', '') }}" style="width:100%;">
+            <input type="text" name="entry" id="entry" value="{{ entry }}" style="width:100%;">
         </label><br><br>
         <label>Merkle Root:<br>
-            <input type="text" name="root" id="root" value="{{ root or request.form.get('root', '') }}" style="width:100%;">
+            <input type="text" name="root" id="root" value="{{ root }}" style="width:100%;">
         </label><br><br>
         <label>Directions (JSON-Array, z.B. [1,0,1]):<br>
-            <input type="text" name="directions" id="directions" value="{{ directions or request.form.get('directions', '') }}" style="width:100%;">
+            <input type="text" name="directions" id="directions" value="{{ directions }}" style="width:100%;">
         </label><br><br>
         <label>Proof-Hashes (JSON-Array, z.B. ["...","..."]):<br>
-            <input type="text" name="proof" id="proof" value="{{ proof or request.form.get('proof', '') }}" style="width:100%;">
+            <input type="text" name="proof" id="proof" value="{{ proof }}" style="width:100%;">
         </label><br>
         <div id="validationError" style="color:crimson; margin:0.5em 0 0.8em 0;"></div>
         <button class="thr-btn thr-btn-alt" type="submit" style="margin-top:1.5em;">Verifizieren</button>
