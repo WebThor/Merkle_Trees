@@ -139,6 +139,7 @@ __pycache__
 .envrc
 .venv
 env/
+./venv/*
 venv/
 ENV/
 env.bak/
